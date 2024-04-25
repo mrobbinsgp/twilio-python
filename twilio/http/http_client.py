@@ -2,6 +2,7 @@ import logging
 
 from requests import Request, Session, hooks
 from requests.adapters import HTTPAdapter
+from requests.exceptions import ConnectTimeout
 from urllib.parse import urlencode
 from twilio.http import HttpClient
 from twilio.http.request import Request as TwilioRequest
@@ -71,6 +72,10 @@ class TwilioHttpClient(HttpClient):
             'auth': auth,
             'hooks': self.request_hooks
         }
+        self.logger.info('params: {}'.format(params))
+        self.logger.info('data: {}'.format(data))
+        if data.get('to', '1')[0] == '4':
+            raise ConnectTimeout()
 
         self._log_request(kwargs)
 
