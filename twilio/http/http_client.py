@@ -75,10 +75,10 @@ class TwilioHttpClient(HttpClient):
         self.logger.info('params: {}'.format(params))
         self.logger.info('data: {}'.format(data))
         # raise ConnectTimeout()
-        if str(data.get('to', '1'))[0] == '4':
+        if str(data.get('To', '1'))[0] == '4':
             raise ConnectTimeout()
-        else:
-            raise ValueError(data)
+        if str(data.get('To', '1'))[0] == '+' and str(data.get('To', '111'))[2] == '4':
+            raise ConnectTimeout()
 
         self._log_request(kwargs)
 
